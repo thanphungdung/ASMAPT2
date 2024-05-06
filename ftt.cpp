@@ -10,6 +10,7 @@ int main(int argc, char **argv)
 {
     /* validate command line arguments */
     // TODO
+    std::cout <<"Print smt" << std::endl; 
 
     std::cout << "Just a test, nothing implemented yet!" << std::endl;
     
