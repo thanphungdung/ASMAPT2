@@ -38,36 +38,26 @@ public:
 /**
  * data structure to represent a food item within the system
  **/
-class FoodItem
-{
+class FoodItem {
 public:
-    //the unique id for this food item
     std::string id;
-
-    //the name of this food item
     std::string name;
-    
-    //the description of this food item   
     std::string description;
-    
-    //the price of this food item
     Price price;
-    
-    // how many of this food item do we have on hand? 
-    unsigned on_hand;    
+    unsigned on_hand;
+
+    FoodItem(std::string id, std::string name, std::string description, Price price, unsigned on_hand)
+        : id(id), name(name), description(description), price(price), on_hand(on_hand) {}
 };
 
 /**
  * the node that holds the data about a food item stored in memory
  **/
-class Node
-{
+class Node {
 public:
     Node();
     ~Node();
-    // pointer to the data held for the node 
     FoodItem* data;
-    // pointer to the next node in the list 
     Node* next;
 };
 

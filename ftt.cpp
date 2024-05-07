@@ -8,11 +8,17 @@
  **/
 int main(int argc, char **argv)
 {
-    /* validate command line arguments */
-    // TODO
-    std::cout <<"Print smt" << std::endl; 
+    LinkedList menu;
+    menu.loadFromFile("foods.dat");  // Load the food menu from file
 
-    std::cout << "Just a test, nothing implemented yet!" << std::endl;
-    
-    return EXIT_SUCCESS;
+    int choice = 0;
+    std::cout << "Press 1 to display the menu, 0 to exit: ";
+    while (std::cin >> choice && choice != 0) {
+        if (choice == 1) {
+            menu.display();
+        }
+        std::cout << "Press 1 to display the menu, 0 to exit: ";
+    }
+
+    return 0;
 }
