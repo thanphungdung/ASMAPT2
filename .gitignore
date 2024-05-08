@@ -1,0 +1,5 @@
+*.o
+ftt
+
+*.exe
+.DS_Store

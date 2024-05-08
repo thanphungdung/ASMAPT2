@@ -6,8 +6,10 @@
 class LinkedList
 {
 public:
-    LinkedList();
+    LinkedList() : head(nullptr) {}
     ~LinkedList();
+    void loadFromFile(const std::string& filename);
+    void display() const;
 
     // more functions to be added perhaps...
 
