@@ -10,7 +10,8 @@ public:
     ~LinkedList();
     void loadFromFile(const std::string& filename);
     void display() const;
-
+    void removeFoodItem(const std::string& id);
+    void saveToFile(const std::string& filename);
     // more functions to be added perhaps...
 
 private:
