@@ -35,7 +35,7 @@ void LinkedList::loadFromFile(const std::string& filename) {
 
         Price foodPrice;
         foodPrice.dollars = static_cast<unsigned>(price);
-        foodPrice.cents = static_cast<unsigned>((price - foodPrice.dollars) * 100);
+        foodPrice.cents = static_cast<unsigned>((price - foodPrice.dollars) * 100 + 0.5);  // Add 0.5 for rounding
 
         FoodItem* item = new FoodItem(id, name, description, foodPrice, DEFAULT_FOOD_STOCK_LEVEL);
         Node* newNode = new Node();
@@ -76,4 +76,57 @@ void LinkedList::display() const {
                   << std::setfill(' ') << std::endl;
         current = current->next;
     }
+}
+
+void LinkedList::removeFoodItem(const std::string& id) {
+    if (head != nullptr) {
+        Node* current = head;
+        Node* previous = nullptr;
+
+        while (current != nullptr && current->data->id != id) {
+            previous = current;
+            current = current->next;
+        }
+
+        if (current == nullptr) { // Food item not found
+            std::cerr << "Food item with ID " << id << " not found." << std::endl;
+            return;
+        }
+
+        if (previous == nullptr) {
+            head = current->next;
+        } else {
+            previous->next = current->next;
+        }
+
+        std::cout << id << " – " << current->data->name << " - " << current->data->description 
+                  << " has been removed from the system." << std::endl;
+
+        delete current->data;  // Delete the FoodItem object first
+        // delete current;  // Then delete the node itself
+
+        saveToFile("foods.dat");
+    } else {
+        std::cerr << "The menu is currently empty." << std::endl;
+    }
+}
+
+void LinkedList::saveToFile(const std::string& filename) {
+    std::ofstream file(filename);
+    if (!file) {
+        std::cerr << "Unable to open file for writing: " << filename << std::endl;
+        return;
+    }
+
+    Node* current = head;
+    while (current != nullptr) {
+        file << current->data->id << '|' 
+             << current->data->name << '|' 
+             << current->data->description << '|' 
+             << std::to_string(current->data->price.dollars) << "." 
+             << std::setw(2) << std::setfill('0') << current->data->price.cents
+             << std::setfill(' ') << std::endl;
+        current = current->next;
+    }
+    file.close();
 }
