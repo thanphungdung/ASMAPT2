@@ -141,41 +141,41 @@ void LinkedList::saveToFile(const std::string& filename) {
     file.close();
 }
 void LinkedList::addFoodItem() {
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Clear the input buffer completely
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
 
     std::string name, description, priceStr;
     std::cout << "Enter the item name: ";
-    std::getline(std::cin, name);  // Read the full line for the name
+    std::getline(std::cin, name);  
     std::cout << "Enter the item description: ";
-    std::getline(std::cin, description);  // Read the full line for the description
+    std::getline(std::cin, description);  
     std::cout << "Enter the price for this item (in dollars and cents, e.g., 8.50): ";
-    std::getline(std::cin, priceStr);  // Read the full line for the price
-    double price = std::stod(priceStr);  // Convert the price string to double
+    std::getline(std::cin, priceStr); 
+    double price = std::stod(priceStr);  
 
-    lastId++;  // Increment the last used ID
+    lastId++;  
     std::stringstream ss;
-    ss << 'F' << std::setw(4) << std::setfill('0') << lastId;  // Format the ID with leading zeros
-    std::string id = ss.str();  // Store formatted ID in a string
+    ss << 'F' << std::setw(4) << std::setfill('0') << lastId;  
+    std::string id = ss.str();  
 
-    Price foodPrice;  // Create a Price structure to hold dollars and cents
+    Price foodPrice;  
     foodPrice.dollars = static_cast<unsigned>(price);
-    foodPrice.cents = static_cast<unsigned>((price - static_cast<double>(foodPrice.dollars)) * 100 + 0.5);  // Calculate cents from the decimal part
+    foodPrice.cents = static_cast<unsigned>((price - static_cast<double>(foodPrice.dollars)) * 100 + 0.5);  
 
     FoodItem* newItem = new FoodItem{id, name, description, foodPrice, DEFAULT_FOOD_STOCK_LEVEL};
-    Node* newNode = new Node();  // Create a new node for the linked list
-    newNode->data = newItem;  // Assign the newly created food item to the node
-    newNode->next = nullptr;  // The new node is currently the last node, so next is nullptr
+    Node* newNode = new Node();  
+    newNode->data = newItem;  
+    newNode->next = nullptr;  
 
     if (head == nullptr) {
-        head = newNode;  // If the list is empty, the new node becomes the head
+        head = newNode;  
     } else {
         Node* last = head;
-        while (last->next != nullptr) {  // Traverse to the end of the list
+        while (last->next != nullptr) {  
             last = last->next;
         }
-        last->next = newNode;  // Append the new node to the end of the list
+        last->next = newNode;  
     }
-    count++;  // Increment the count of total items in the list
+    count++;  
 
     std::cout << "This item \"" << name << " – " << description << "\" has now been added to the food menu.\n";
     saveToFile("foods.dat");
