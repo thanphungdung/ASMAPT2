@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
       return EXIT_SUCCESS;
     } else if (choice == 4) {
       // Handle add food option
-      std::cout << "Adding food...\n";
+      menu.addFoodItem();
     } else if (choice == 5) {
       std::cout << "Enter the food id of the food to remove: ";
       std::string idToRemove;
