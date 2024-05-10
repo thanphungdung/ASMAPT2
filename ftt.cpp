@@ -1,7 +1,11 @@
 #include <iostream>
 #include "LinkedList.h"
+#include "Coin.h"
 #include <cstdlib>
 #include <fstream>
+#include <vector>
+
+
 
 // Function to display the main menu
 void displayMainMenu() {
@@ -52,8 +56,19 @@ int main(int argc, char **argv) {
     if (choice == 1) {
       menu.display();
     } else if (choice == 2) {
-      // Handle purchase meal option
-      std::cout << "Purchasing meal...\n";
+      // std::cout << "Enter the Food Item ID to purchase: ";     
+      // std::string id;
+      // std::cin>> id;
+      // menu.searchFoodItem(id);
+      Coin::initializeDenominationValues(); // Initialize coin values
+      std::string foodId;
+      std::cout << "Enter the ID of the food you wish to purchase: ";
+      std::cin >> foodId;
+
+    menu.searchFoodItem(foodId); // Search and initiate purchase process
+
+    return 0;
+
     } else if (choice == 3) {
       // Handle save and exit option
       std::cout << "Saving changes and exiting...\n";
