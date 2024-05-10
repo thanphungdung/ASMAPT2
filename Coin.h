@@ -1,27 +1,32 @@
 #ifndef COIN_H
 #define COIN_H
 
-// Coin.h defines the coin structure for managing currency in the system. 
-#define DELIM ","  // delimiter 
+#include <vector>
+#include <map>
 
-// enumeration representing the various types of currency available in the system. 
-enum Denomination
-{
-    FIVE_CENTS, TEN_CENTS, TWENTY_CENTS, FIFTY_CENTS, ONE_DOLLAR, 
-    TWO_DOLLARS, FIVE_DOLLARS, TEN_DOLLARS, TWENTY_DOLLARS
+// Enumeration for coin denominations
+enum Denomination {
+    FIVE_CENTS, TEN_CENTS, TWENTY_CENTS, FIFTY_CENTS,
+    ONE_DOLLAR, TWO_DOLLARS, FIVE_DOLLARS,
+    TEN_DOLLARS, TWENTY_DOLLARS, FIFTY_DOLLARS
 };
 
-
-// represents a coin type stored in the cash register perhaps. Each demonination
-// will have exactly one of these in the cash register.
-class Coin
-{
+// Coin class for managing currency in the system
+class Coin {
 public:
-    // the denomination type
-    enum Denomination denom;
-    
-    // the count of how many of these are in the cash register
-    unsigned count;
+    Denomination denom;
+    unsigned int count;
+
+    Coin(Denomination d, unsigned int c = 0);
+
+    // Transaction-related functions
+    static void addMonetaryInput(Denomination denom, unsigned count = 1);
+    static int calculateTotalInput();
+    static void handlePurchase(float foodCost);
+    static void calculateChange(int change);
+    // Helper to initialize denomination values
+    static void initializeDenominationValues();
+    static std::map<Denomination, int> denominationValue;
 };
 
 #endif // COIN_H
