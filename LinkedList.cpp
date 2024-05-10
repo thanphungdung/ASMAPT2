@@ -3,6 +3,9 @@
 #include <sstream>
 #include "LinkedList.h"
 #include <iomanip>  // Include for output formatting
+#include <limits>  // Required for std::numeric_limits
+
+
 
 
 LinkedList::~LinkedList() {
@@ -182,3 +185,26 @@ void LinkedList::addFoodItem() {
 }
 
 
+void LinkedList::searchFoodItem(const std::string& id) {
+    Node* current = head;
+    while (current != nullptr && current->data->id != id) {
+        current = current->next;
+    }
+
+    if (current == nullptr) { // Food item not found
+        std::cerr << "Food item with ID " << id << " not found." << std::endl;
+        return;
+    }
+
+    // Displaying the selected food item
+    std::cout << "You have selected \"" << current->data->name << " - " << current->data->description << "\". This will cost you $"
+              << current->data->price.dollars << "." << std::setw(2) << std::setfill('0') << current->data->price.cents << std::setfill(' ') << std::endl;
+    
+    // Calculate the total cost in dollars
+    float price = current->data->price.dollars + current->data->price.cents / 100.0f;
+    
+    std::cout << "Please hand over the money - type in the value of each note/coin in cents." << std::endl;
+
+    // Call Coin's handlePurchase to process the payment
+    Coin::handlePurchase(price);
+}

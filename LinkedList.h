@@ -14,6 +14,7 @@ public:
     void removeFoodItem(const std::string& id);
     void saveToFile(const std::string& filename);
     void addFoodItem();
+    void searchFoodItem(const std::string& id);
 
     // more functions to be added perhaps...
 

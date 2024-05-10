@@ -7,3 +7,4 @@ Node::Node() : data(nullptr), next(nullptr) {}
 Node::~Node() {
     delete data; // This ensures that the FoodItem resources are freed when a Node is destroyed.
 }
+
