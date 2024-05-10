@@ -11,7 +11,8 @@ public:
     ~LinkedList();
     void loadFromFile(const std::string& filename);
     void display() const;
-    void removeFoodItem(const std::string& id);
+    Node* findFoodByID(const std::string& id);
+    void removeFoodItem();
     void saveToFile(const std::string& filename);
     void addFoodItem();
 
