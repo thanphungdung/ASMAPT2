@@ -23,9 +23,21 @@ void displayMainMenu() {
 
 // Function to get user input for menu selection
 int getMenuChoice() {
-  int choice;
-  std::cin >> choice;
-  return choice;
+    int choice;
+    while (true) { // Infinite loop to keep asking until a valid input is given
+        if (std::cin >> choice) {
+            if (choice >= 1 && choice <= 7) {
+                return choice; // Valid choice, break the loop
+            } else {
+                std::cout << "Invalid menu choice. Please select a number between 1 and 7: ";
+            }
+        } else {
+            // Handle non-numeric input
+            std::cin.clear(); // Clear error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore wrong input until a newline is encountered
+            std::cout << "Invalid input. Please enter a number: ";
+        }
+    }
 }
 
 /**
@@ -65,18 +77,13 @@ int main(int argc, char **argv) {
       // Handle add food option
       menu.addFoodItem();
     } else if (choice == 5) {
-      std::cout << "Enter the food id of the food to remove: ";
-      std::string idToRemove;
-      std::cin >> idToRemove;
-      menu.removeFoodItem(idToRemove);
+      menu.removeFoodItem();
     } else if (choice == 6) {
       // Handle display balance option
       std::cout << "Displaying balance...\n";
     } else if (choice == 7) {
       std::cout << "Program aborted by user.\n";
       return EXIT_SUCCESS;
-    } else {
-      std::cerr << "Invalid menu choice. Please select a valid option (1-7).\n";
     }
   }
 

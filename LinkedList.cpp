@@ -73,7 +73,7 @@ void LinkedList::display() const {
     }
 
     // Print the header
-    std::cout << "Food Menu" << std::endl;
+    std::cout << "\nFood Menu" << std::endl;
     std::cout << "--------" << std::endl;
     std::cout << std::left << std::setw(6) << "ID" << "|"
               << std::setw(15) << "Name" << "|"
@@ -91,38 +91,54 @@ void LinkedList::display() const {
     }
 }
 
-void LinkedList::removeFoodItem(const std::string& id) {
-    if (head != nullptr) {
-        Node* current = head;
-        Node* previous = nullptr;
-
-        while (current != nullptr && current->data->id != id) {
-            previous = current;
-            current = current->next;
+Node* LinkedList::findFoodByID(const std::string& id) {
+    Node* current = head;
+    while (current != nullptr) {
+        if (current->data->id == id) {
+            return current;  // Found the node with the given ID
         }
+        current = current->next;
+    }
+    return nullptr;  // ID not found
+}
 
-        if (current == nullptr) { // Food item not found
-            std::cerr << "Food item with ID " << id << " not found." << std::endl;
-            return;
-        }
-
-        if (previous == nullptr) {
-            head = current->next;
-        } else {
-            previous->next = current->next;
-        }
-
-        std::cout << id << " – " << current->data->name << " - " << current->data->description 
-                  << " has been removed from the system." << std::endl;
-
-        delete current->data;  // Delete the FoodItem object first
-        // delete current;  // Then delete the node itself
-
-        saveToFile("foods.dat");
-    } else {
+void LinkedList::removeFoodItem() {
+    if (head == nullptr) {
         std::cerr << "The menu is currently empty." << std::endl;
     }
+
+    std::string id;
+    std::cout << "Enter the food id of the food to remove: ";
+    std::cin >> id;
+
+    Node* nodeToRemove = findFoodByID(id);
+
+ if (nodeToRemove == nullptr) {
+        std::cerr << "Food item with ID " << id << " not found." << std::endl;
+    } else {
+    Node* current = head;
+    Node* previous = nullptr;
+    // Find the previous node
+    while (current != nodeToRemove) {
+        previous = current;
+        current = current->next;
+    }
+
+    // Remove the node
+    if (previous == nullptr) {
+        head = nodeToRemove->next; // Removing the head node
+    } else {
+        previous->next = nodeToRemove->next; // Bypass the node to remove
+    }
+
+    std::cout << id << " – " << nodeToRemove->data->name << " - " << nodeToRemove->data->description 
+              << " has been removed from the system." << std::endl;
+
+    delete nodeToRemove->data;  // Delete the FoodItem object first
+    saveToFile("foods.dat");
+    }
 }
+
 
 void LinkedList::saveToFile(const std::string& filename) {
     std::ofstream file(filename);
