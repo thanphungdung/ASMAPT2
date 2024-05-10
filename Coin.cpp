@@ -82,25 +82,33 @@ void Coin::handlePurchase(float foodCost) {
 }
 
 void Coin::calculateChange(int change) {
+    // Prepare a sorted list of denominations from largest to smallest
     std::vector<std::pair<int, Denomination>> sortedDenoms;
-
     for (const auto& pair : denominationValue) {
         sortedDenoms.push_back({pair.second, pair.first});
     }
+    // Sorting in descending order for optimal change calculation
     std::sort(sortedDenoms.begin(), sortedDenoms.end(), std::greater<>());
 
-    std::cout << "Your change is: ";
+    std::vector<int> changeDenoms; // To store each denomination for change
+
+    // Calculate change using the largest denominations first
     for (const auto& denom : sortedDenoms) {
-        int count = change / denom.first;
-        if (count > 0) {
-            if (denom.first >= 100) {
-                std::cout << count << " x $" << denom.first / 100 << " ";
-            } else {
-                std::cout << count << " x " << denom.first << "c ";
-            }
-            change -= count * denom.first;
+        while (change >= denom.first) {
+            changeDenoms.push_back(denom.first); // Add each denomination used to the vector
+            change -= denom.first;
         }
-        if (change == 0) break;
+    }
+
+    // Display the change in ascending order
+    std::cout << "Your change is: ";
+    std::sort(changeDenoms.begin(), changeDenoms.end()); // Sort the change denominations vector in ascending order
+    for (const auto& denom : changeDenoms) {
+        if (denom >= 100) {  // Output in dollars if denomination is 100 cents or more
+            std::cout << "$" << denom / 100 << " ";
+        } else {  // Output in cents otherwise
+            std::cout << denom << "c ";
+        }
     }
     std::cout << std::endl;
 }
