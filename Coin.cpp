@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <iomanip>
 
 std::vector<Coin> monetaryInputs; // To store inputs
 std::map<Denomination, int> Coin::denominationValue;
@@ -48,7 +49,6 @@ void Coin::handlePurchase(float foodCost) {
         int input;
         std::cout << "Please insert money (in cents): ";
         std::cin >> input;
-
         bool valid = false;
         for (auto& pair : denominationValue) {
             if (pair.second == input) {
@@ -111,4 +111,32 @@ void Coin::calculateChange(int change) {
         }
     }
     std::cout << std::endl;
+}
+
+void Coin::displayBalance() {
+    // Calculate the total value and prepare data for display
+    std::vector<std::pair<int, int>> balanceSummary;
+    int totalValueCents = 0;
+    
+    for (const auto& coin : monetaryInputs) {
+        int value = denominationValue[coin.denom] * coin.count;
+        balanceSummary.emplace_back(denominationValue[coin.denom], value);
+        totalValueCents += value;
+    }
+    
+    // Sort by denomination value
+    std::sort(balanceSummary.begin(), balanceSummary.end());
+
+    // Display formatted output
+    std::cout << "\nBalance Summary\n"
+              << "---------------\n"
+              << "Denom | Quantity | Value  \n"
+              << "--------------------------\n";
+    for (const auto& entry : balanceSummary) {
+        std::cout << std::left << std::setw(5) << entry.first  // Denomination left-aligned
+                  << " | " << std::left << std::setw(8) << entry.second / entry.first  // Quantity left-aligned
+                  << " |$" << std::right << std::setw(7) << std::fixed << std::setprecision(2) << entry.second / 100.0 << "\n";  // Value formatted and right-aligned
+    }
+    std::cout << "--------------------------\n"
+              << std::setw(19) << "$" << std::right << std::setw(7) << std::fixed << std::setprecision(2) << totalValueCents / 100.0 << "\n";  // Total value right-aligned
 }

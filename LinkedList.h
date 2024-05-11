@@ -11,11 +11,12 @@ public:
     ~LinkedList();
     void loadFromFile(const std::string& filename);
     void display() const;
-    Node* findFoodByID(const std::string& id);
+    Node* searchFoodItem(const std::string& id);
     void removeFoodItem();
     void saveToFile(const std::string& filename);
     void addFoodItem();
-    void searchFoodItem(const std::string& id);
+    void selectFoodToPurchase(const std::string& id);
+    void abortProgram();
 
     // more functions to be added perhaps...
 

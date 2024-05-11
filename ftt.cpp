@@ -65,9 +65,7 @@ int main(int argc, char **argv) {
       std::cout << "Enter the ID of the food you wish to purchase: ";
       std::cin >> foodId;
 
-    menu.searchFoodItem(foodId); // Search and initiate purchase process
-
-    return 0;
+      menu.selectFoodToPurchase(foodId); // Search and initiate purchase process
 
     } else if (choice == 3) {
       // Handle save and exit option
@@ -79,11 +77,10 @@ int main(int argc, char **argv) {
     } else if (choice == 5) {
       menu.removeFoodItem();
     } else if (choice == 6) {
-      // Handle display balance option
-      std::cout << "Displaying balance...\n";
+      Coin coin; // Create an instance of the Coin class
+      coin.displayBalance(); // Call the displayBalance() function on the instance
     } else if (choice == 7) {
-      std::cout << "Program aborted by user.\n";
-      return EXIT_SUCCESS;
+      menu.abortProgram();
     }
   }
 

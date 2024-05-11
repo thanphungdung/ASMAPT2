@@ -23,6 +23,7 @@ public:
     Denomination denom;
     unsigned int count;
 
+    Coin() = default; // Default constructor
     // Constructor
     Coin(Denomination d, unsigned int c = 0);
 
@@ -32,6 +33,7 @@ public:
     static int calculateTotalInput();
     static void handlePurchase(float foodCost);
     static void calculateChange(int change);
+    void displayBalance();
 
     // Inventory management
     static void saveCoinInventory();
