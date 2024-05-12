@@ -205,7 +205,7 @@ void LinkedList::selectFoodToPurchase(const std::string& id) {
     
     std::cout << "Please hand over the money - type in the value of each note/coin in cents." << std::endl;
 
-    Coin::handlePurchase(price);
+    VendingMachine::handlePurchase(price);
 }
 
 void LinkedList::abortProgram() {
