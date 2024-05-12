@@ -1,7 +1,10 @@
 #ifndef COIN_H
 #define COIN_H
 
+#include <iostream>
+#include <vector>
 #include <map>
+#include <algorithm>
 
 // Enumeration for coin denominations
 enum Denomination {
@@ -17,31 +20,37 @@ enum Denomination {
     FIFTY_DOLLARS = 5000
 };
 
-// Coin class for managing currency in the system
 class Coin {
 public:
     Denomination denom;
     unsigned int count;
+    Coin() = default;
+    Coin(Denomination d, unsigned int c = 1) : denom(d), count(c) {}
+};
 
-    Coin() = default; // Default constructor
-    // Constructor
-    Coin(Denomination d, unsigned int c = 0);
+class Transaction {
+public:
+    std::vector<Coin> monetaryInputs;
+    std::vector<Coin> changeGiven;
+    Transaction* next;
 
-    // Static methods for handling transactions and inventory
-    static void initializeDenominationValues();
-    static void addMonetaryInput(Denomination denom, unsigned count = 1);
-    static int calculateTotalInput();
-    static void handlePurchase(float foodCost);
-    static void calculateChange(int change);
-    void displayBalance();
+    Transaction() : next(nullptr) {}
+};
 
-    // Inventory management
-    static void saveCoinInventory();
-    static void loadCoinInventory();
-
-    // Maps to hold denomination values and current inventory
+class VendingMachine {
+public:
     static std::map<Denomination, int> denominationValue;
-    static std::map<Denomination, int> denominationInventory;
+    static Transaction* head;
+    // static void displayBalance();
+
+    static void initializeDenominationValues();
+    static void handlePurchase(float foodCost);
+    static void addMonetaryInput(Transaction* transaction, Denomination denom, unsigned count);
+    static int calculateTotalInput(Transaction* transaction);
+    static void calculateChange(Transaction* transaction, int change);
+    static void printTransactions();
+    static void clearTransactions();
+    static void saveTransactionsToFile();
 };
 
 #endif // COIN_H
