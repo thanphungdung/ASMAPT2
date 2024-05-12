@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
 
     } else if (choice == 3) {
       // Handle save and exit option
-      std::cout << "Saving changes and exiting...\n";
+      menu.saveToFile("foods.dat");
       return EXIT_SUCCESS;
     } else if (choice == 4) {
       // Handle add food option

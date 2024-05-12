@@ -24,7 +24,7 @@ void LinkedList::loadFromFile(const std::string& filename) {
 
     std::string line;
     Node* last = nullptr;
-    int currentMaxId = 0;
+    lastId = 0;  // Make sure to reset lastId when loading new file
 
     while (getline(file, line)) {
         std::stringstream ss(line);
@@ -38,7 +38,7 @@ void LinkedList::loadFromFile(const std::string& filename) {
         try {
             price = std::stod(priceStr);
         } catch (const std::invalid_argument& e) {
-            return;
+            continue;  // Skip this item and continue with the next if price conversion fails
         }
 
         Price foodPrice;
@@ -59,13 +59,10 @@ void LinkedList::loadFromFile(const std::string& filename) {
         }
 
         int idNum = std::stoi(id.substr(1));
-        if (idNum > currentMaxId) {
-            currentMaxId = idNum;
+        if (idNum > lastId) {
+            lastId = idNum;
         }
-    }
-
-    lastId = currentMaxId;
-    file.close();
+    }    file.close();
 }
 
 void LinkedList::display() const {
