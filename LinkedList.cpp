@@ -24,7 +24,7 @@ void LinkedList::loadFromFile(const std::string& filename) {
 
     std::string line;
     Node* last = nullptr;
-    int currentMaxId = 0;
+    lastId = 0;  // Make sure to reset lastId when loading new file
 
     while (getline(file, line)) {
         std::stringstream ss(line);
@@ -38,7 +38,7 @@ void LinkedList::loadFromFile(const std::string& filename) {
         try {
             price = std::stod(priceStr);
         } catch (const std::invalid_argument& e) {
-            return;
+            continue;  // Skip this item and continue with the next if price conversion fails
         }
 
         Price foodPrice;
@@ -59,13 +59,10 @@ void LinkedList::loadFromFile(const std::string& filename) {
         }
 
         int idNum = std::stoi(id.substr(1));
-        if (idNum > currentMaxId) {
-            currentMaxId = idNum;
+        if (idNum > lastId) {
+            lastId = idNum;
         }
-    }
-
-    lastId = currentMaxId;
-    file.close();
+    }    file.close();
 }
 
 void LinkedList::display() const {
@@ -101,6 +98,10 @@ void LinkedList::removeFoodItem() {
     std::cout << "Enter the food id of the food to remove: ";
     std::cin >> id;
     Node* nodeToRemove = searchFoodItem(id);
+    if (nodeToRemove == nullptr) {
+       
+        return; 
+    }
     Node* current = head;
     Node* previous = nullptr;
 
@@ -148,14 +149,27 @@ void LinkedList::addFoodItem() {
 
     std::cout << "Enter the item name: ";
     std::getline(std::cin, name);  
+    if (!std::all_of(name.begin(), name.end(), [](char c) { return std::isalpha(c) || std::isspace(c); })) {
+        std::cerr << "Invalid input: Name must contain only letters and spaces." << std::endl;
+        return;  // Return to main menu or calling function
+    }
+    if (name.length() > NAMELEN) {
+        std::cerr << "Error: Name cannot exceed 40 characters." << std::endl;
+        return;
+    }
     std::cout << "Enter the item description: ";
     std::getline(std::cin, description);  
+    if (description.length() > DESCLEN) {
+        std::cerr << "Error: Description cannot exceed 255 characters." << std::endl;
+        return;
+    }
     std::cout << "Enter the price for this item (in dollars and cents, e.g., 8.50): ";
     std::getline(std::cin, priceStr); 
     double price;  
     try {
         price = std::stod(priceStr);
     } catch (const std::invalid_argument& e) {
+        std::cerr << "Invalid price entered. Please enter a valid price." << std::endl;
         return;
     }
 
@@ -201,6 +215,10 @@ Node* LinkedList::searchFoodItem(const std::string& id) {
 
 void LinkedList::selectFoodToPurchase(const std::string& id) {
     Node* selectedFood = searchFoodItem(id);
+    if (selectedFood == nullptr) {
+       
+        return; 
+    }
     std::cout << "You have selected \"" << selectedFood->data->name << " - " << selectedFood->data->description << "\". This will cost you $"
               << selectedFood->data->price.dollars << "." << std::setw(2) << std::setfill('0') << selectedFood->data->price.cents << std::setfill(' ') << std::endl;
     
@@ -208,7 +226,7 @@ void LinkedList::selectFoodToPurchase(const std::string& id) {
     
     std::cout << "Please hand over the money - type in the value of each note/coin in cents." << std::endl;
 
-    Coin::handlePurchase(price);
+    VendingMachine::handlePurchase(price);
 }
 
 void LinkedList::abortProgram() {
