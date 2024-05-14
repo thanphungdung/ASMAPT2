@@ -40,6 +40,8 @@ public:
 class VendingMachine {
 public:
     static std::map<Denomination, int> denominationValue;
+    static std::map<Denomination, int> coinInventory; // Maps denomination value to quantity
+
     static Transaction* head;
     // static void displayBalance();
 
@@ -48,9 +50,12 @@ public:
     static void addMonetaryInput(Transaction* transaction, Denomination denom, unsigned count);
     static int calculateTotalInput(Transaction* transaction);
     static void calculateChange(Transaction* transaction, int change);
-    static void printTransactions();
     static void clearTransactions();
-    static void saveTransactionsToFile();
+    static void updateCoinInventory(); // Save the current inventory to a file
+    static void displayBalance();
+    static void saveInventoryToFile();
+    // static void updateInventory(); // Update inventory based on transactions
+
 };
 
 #endif // COIN_H
