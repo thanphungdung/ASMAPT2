@@ -62,6 +62,7 @@ void VendingMachine::handlePurchase(float foodCost) {
 
         if (std::cin.fail()) {
             std::cin.clear(); // Clear error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Invalid input. Please enter a number: ";
             continue;
         }
