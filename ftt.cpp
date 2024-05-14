@@ -53,12 +53,12 @@ int main(int argc, char **argv) {
       std::string foodId;
       std::cout << "Enter the ID of the food you wish to purchase: ";
       std::cin >> foodId;
-      menu.selectFoodToPurchase(foodId); // Assume this method exists in LinkedList
-      VendingMachine::printTransactions();
+      menu.selectFoodToPurchase(foodId); 
     } else if (choice == 3) {
       menu.saveToFile("foods.dat");
       VendingMachine vm;
-      vm.saveTransactionsToFile();  // Save all transactions to file
+      vm.updateCoinInventory();  
+      vm.saveInventoryToFile();
 
       return EXIT_SUCCESS;
     } else if (choice == 4) {
@@ -66,9 +66,9 @@ int main(int argc, char **argv) {
     } else if (choice == 5) {
       menu.removeFoodItem();
     } else if (choice == 6) {
-      // Coin::displayBalance();
+      VendingMachine::displayBalance();
     } else if (choice == 7) {
-      menu.abortProgram(); // Assuming this method exists to handle clean-up and exit
+      menu.abortProgram(); 
     } else {
       std::cout << "Invalid choice, please choose again.\n";
     }

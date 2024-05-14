@@ -2,16 +2,18 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
-#include <fstream>  // Include for file operations
+#include <fstream>  
 #include <iomanip>
 
 
 std::map<Denomination, int> VendingMachine::denominationValue;
 Transaction* VendingMachine::head = nullptr;
+std::map<int, int> data;
+std::map<Denomination, int> VendingMachine::coinInventory;
+
 
 std::map<int, int> loadCurrentData() {
     std::ifstream inFile("coins.dat");
-    std::map<int, int> data;
     int denomination, count;
 
     if (!inFile.is_open()) {
@@ -26,6 +28,7 @@ std::map<int, int> loadCurrentData() {
     inFile.close();
     return data;
 }
+
 void VendingMachine::initializeDenominationValues() {
     denominationValue[FIVE_CENTS] = 5;
     denominationValue[TEN_CENTS] = 10;
@@ -41,7 +44,7 @@ void VendingMachine::initializeDenominationValues() {
 
 void VendingMachine::handlePurchase(float foodCost) {
     if (!denominationValue.size()) {
-        initializeDenominationValues();  // Initialize coin values only if they haven't been initialized
+        initializeDenominationValues();  
     }
 
     Transaction* transaction = new Transaction();
@@ -59,7 +62,6 @@ void VendingMachine::handlePurchase(float foodCost) {
 
         if (std::cin.fail()) {
             std::cin.clear(); // Clear error flag
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Invalid input. Please enter a number: ";
             continue;
         }
@@ -141,9 +143,9 @@ void VendingMachine::calculateChange(Transaction* transaction, int change) {
         transaction->changeGiven.push_back(coin);
     }
 
-    // Optional: Display the change in ascending order based on denomination value
+    // Display the change in ascending order based on denomination value
     std::sort(changeCoins.begin(), changeCoins.end(), [](const Coin& a, const Coin& b) {
-        return a.denom < b.denom;  // Assuming you want to sort by denomination enum values
+        return a.denom < b.denom;  // Sort by denomination enum values
     });
 
     std::cout << "Your change is: ";
@@ -158,33 +160,7 @@ void VendingMachine::calculateChange(Transaction* transaction, int change) {
     std::cout << std::endl;
 }
 
-void VendingMachine::printTransactions() {
-    if (!head) {
-        std::cout << "No transactions have been recorded." << std::endl;
-        return;
-    }
 
-    int transactionNumber = 1; // To count transactions
-    for (Transaction* cur = head; cur != nullptr; cur = cur->next) {
-        std::cout << "Transaction #" << transactionNumber++ << ":\n";
-        std::cout << "Inputs:\n";
-        for (const Coin& coin : cur->monetaryInputs) {
-            std::cout << "  Denomination: " << denominationValue[coin.denom] 
-                      << " cents, Quantity: " << coin.count << std::endl;
-        }
-
-        std::cout << "Change Given:\n";
-        if (cur->changeGiven.empty()) {
-            std::cout << "  No change given.\n";
-        } else {
-            for (const Coin& coin : cur->changeGiven) {
-                std::cout << "  Denomination: " << denominationValue[coin.denom] 
-                          << " cents, Quantity: " << coin.count << std::endl;
-            }
-        }
-        std::cout << "-----------------------------------------\n";
-    }
-}
 
 void VendingMachine::clearTransactions() {
     while (head) {
@@ -194,67 +170,64 @@ void VendingMachine::clearTransactions() {
     }
 }
 
-void VendingMachine::saveTransactionsToFile() {
-    auto data = loadCurrentData();  // Load existing data from coins.dat
+
+void VendingMachine::updateCoinInventory() {
+    std::map<int, int> data = loadCurrentData();
 
     // Update counts based on transactions
     Transaction* current = head;
     while (current != nullptr) {
-        // Increment counts for monetary inputs
         for (const Coin& coin : current->monetaryInputs) {
-            int denomValue = denominationValue[coin.denom];
-            data[denomValue] += coin.count;
+            data[denominationValue[coin.denom]] += coin.count;
         }
-
-        // Decrement counts for change given
         for (const Coin& coin : current->changeGiven) {
-            int denomValue = denominationValue[coin.denom];
-            data[denomValue] -= coin.count;
+            data[denominationValue[coin.denom]] -= coin.count;
         }
-
         current = current->next;
     }
 
-    // Overwrite coins.dat with updated data
+    // Update the coinInventory with the latest data
+    coinInventory.clear();
+    for (const auto& pair : data) {
+        coinInventory[static_cast<Denomination>(pair.first)] = pair.second;
+    }
+}
+
+
+void VendingMachine::saveInventoryToFile() {
     std::ofstream outFile("coins.dat", std::ios::out | std::ios::trunc);
     if (!outFile.is_open()) {
         std::cerr << "Failed to open coins.dat for writing." << std::endl;
         return;
     }
 
-    for (const auto& pair : data) {
+    for (const auto& pair : coinInventory) {
         outFile << pair.first << "," << pair.second << std::endl;
     }
-
     outFile.close();
-    std::cout << "Updated coins.dat with new transaction data." << std::endl;
 }
 
 
-// void VendingMachine::displayBalance() {
-//     // Calculate the total value and prepare data for display
-//     std::vector<std::pair<int, int>> balanceSummary;
-//     int totalValueCents = 0;
-    
-//     for (const auto& coin : monetaryInputs) {
-//         int value = denominationValue[coin.denom] * coin.count;
-//         balanceSummary.emplace_back(denominationValue[coin.denom], value);
-//         totalValueCents += value;
-//     }
-    
-//     // Sort by denomination value
-//     std::sort(balanceSummary.begin(), balanceSummary.end());
+void VendingMachine::displayBalance() {
 
-//     // Display formatted output
-//     std::cout << "\nBalance Summary\n"
-//               << "---------------\n"
-//               << "Denom | Quantity | Value  \n"
-//               << "--------------------------\n";
-//     for (const auto& entry : balanceSummary) {
-//         std::cout << std::left << std::setw(5) << entry.first  // Denomination left-aligned
-//                   << " | " << std::left << std::setw(8) << entry.second / entry.first  // Quantity left-aligned
-//                   << " |$" << std::right << std::setw(7) << std::fixed << std::setprecision(2) << entry.second / 100.0 << "\n";  // Value formatted and right-aligned
-//     }
-//     std::cout << "--------------------------\n"
-//               << std::setw(19) << "$" << std::right << std::setw(7) << std::fixed << std::setprecision(2) << totalValueCents / 100.0 << "\n";  // Total value right-aligned
-// }
+
+    VendingMachine::updateCoinInventory();
+    int totalValueCents = 0;
+
+    std::cout << "\nBalance Summary\n"
+              << "---------------\n"
+              << "Denom | Quantity | Value\n"
+              << "--------------------------\n";
+
+    for (const auto& pair : coinInventory) {
+        int value = denominationValue[pair.first] * pair.second;
+        totalValueCents += value;
+
+        std::cout << std::left << std::setw(5) << pair.first  
+                  << " | " << std::left << std::setw(8) << pair.second
+                  << " | $" << std::right << std::setw(7) << std::fixed << std::setprecision(2) << value / 100.0 << "\n";
+    }
+    std::cout << "--------------------------\n"
+              << std::setw(19) << "$" << std::right << std::setw(7) << std::fixed << std::setprecision(2) << totalValueCents / 100.0 << "\n";
+}
+
