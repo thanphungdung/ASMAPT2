@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <fstream>  
 #include <iomanip>
-
+#include <limits>
 
 std::map<Denomination, int> VendingMachine::denominationValue;
 Transaction* VendingMachine::head = nullptr;
@@ -55,14 +55,29 @@ void VendingMachine::handlePurchase(float foodCost) {
     int costInCents = static_cast<int>(foodCost * 100);
     std::cout << "Your total needs to be at least $" << foodCost << std::endl;
 
+    int enterCount = 0;  // Count consecutive Enter key presses
     while (totalInput < costInCents) {
-        int input;
+        std::string inputLine;
         std::cout << "Please insert money (in cents): ";
-        std::cin >> input;
+        std::getline(std::cin, inputLine);
 
-        if (std::cin.fail()) {
-            std::cin.clear(); // Clear error flag
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        if (inputLine.empty()) {
+            enterCount++;
+            if (enterCount == 1 ) {
+                std::cout << "Transaction cancelled. Returning to main menu.\n";
+                VendingMachine::clearTransactions();
+                return;  // Exit the function to cancel the transaction
+            }
+            continue;
+        } else {
+            enterCount = 0;  // Reset enter count when input is not empty
+        }
+
+        // Convert string input to integer
+        int input;
+        try {
+            input = std::stoi(inputLine);
+        } catch (const std::invalid_argument& ia) {
             std::cout << "Invalid input. Please enter a number: ";
             continue;
         }
@@ -77,7 +92,7 @@ void VendingMachine::handlePurchase(float foodCost) {
         }
 
         if (!valid) {
-            std::cout << "Invalid denomination. Please try again." << std::endl;
+            std::cout << "Invalid denomination. Please try again.\n";
             continue;
         }
 
@@ -172,6 +187,7 @@ void VendingMachine::clearTransactions() {
 }
 
 
+
 void VendingMachine::updateCoinInventory() {
     std::map<int, int> data = loadCurrentData();
 
@@ -221,7 +237,7 @@ void VendingMachine::displayBalance() {
               << "--------------------------\n";
 
     for (const auto& pair : coinInventory) {
-        int value = denominationValue[pair.first] * pair.second;
+        int value = pair.first * pair.second;
         totalValueCents += value;
 
         std::cout << std::left << std::setw(5) << pair.first  
@@ -231,4 +247,3 @@ void VendingMachine::displayBalance() {
     std::cout << "--------------------------\n"
               << std::setw(19) << "$" << std::right << std::setw(7) << std::fixed << std::setprecision(2) << totalValueCents / 100.0 << "\n";
 }
-
