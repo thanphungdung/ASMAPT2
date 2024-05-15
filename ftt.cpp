@@ -50,10 +50,28 @@ int main(int argc, char **argv) {
     if (choice == 1) {
       menu.display();
     } else if (choice == 2) {
-      std::string foodId;
-      std::cout << "Enter the ID of the food you wish to purchase: ";
-      std::cin >> foodId;
-      menu.selectFoodToPurchase(foodId); 
+        std::cout << "Enter the ID of the food you wish to purchase (press Enter on a new line to cancel): ";
+
+        std::string foodId;
+        int enterCount = 0;  // Count consecutive Enter key presses
+
+        // Loop to handle input
+        while (true) {
+            std::getline(std::cin, foodId);
+
+            if (foodId.empty()) {
+                enterCount++;  // Increment counter if line is empty
+                if (enterCount == 2) {  // Check if Enter was pressed twice
+                    std::cout << "Transaction cancelled. Returning to main menu.\n";
+                    break;  // Exit the loop and skip to the next iteration of the main loop
+                }
+            } else {
+                enterCount = 0;  // Reset counter if input is not empty
+                // Proceed with processing the food ID
+                menu.selectFoodToPurchase(foodId);
+                break;  // Exit the loop and continue with the transaction
+            }
+        }
     } else if (choice == 3) {
       menu.saveToFile("foods.dat");
       VendingMachine vm;
