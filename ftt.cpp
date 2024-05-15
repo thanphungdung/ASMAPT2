@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <limits>
+#include <fstream>
 #include "LinkedList.h"
 #include "Coin.h"
 
@@ -32,7 +33,7 @@ int getMenuChoice() {
             // Handle non-numeric input
             std::cin.clear(); // Clear error flag
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore wrong input
-            std::cout << "Invalid input. Please enter a number: ";
+            std::cout << "Invalid menu choice. Please select a number between 1 and 7: ";
         }
     }
 }
@@ -40,8 +41,18 @@ int getMenuChoice() {
 
 
 int main(int argc, char **argv) {
+  if (argc != 3) {
+    std::cerr << "Usage: " << argv[0] << " <foodsfile> <coinsfile>" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
   LinkedList menu;
-  menu.loadFromFile("foods.dat");  // Load the food menu from file
+  try {
+    menu.loadFromFile(argv[1]);
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << std::endl;
+    exit(EXIT_FAILURE);
+  }
 
   while (true) {
     displayMainMenu();
