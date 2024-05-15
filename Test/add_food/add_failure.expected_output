@@ -10,8 +10,8 @@ Administrator-Only Menu:
 Select your option (1-7): 4
 Enter the item name: Shish Kebab
 Enter the item description: A dish consisting of small cubes of meat threaded on a skewer that are grilled or roasted.
-Enter the price for this item (in dollars and cents, e.g., 8.50): 8.50
-This item "Shish Kebab – A dish consisting of small cubes of meat threaded on a skewer that are grilled or roasted." has now been added to the food menu
+Enter the price for this item (in dollars and cents, e.g., 8.50): eight
+Invalid price entered. Please enter a valid price.
 
 Main Menu:
 1. Display Meal Options

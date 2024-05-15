@@ -226,7 +226,7 @@ void VendingMachine::displayBalance() {
 
         std::cout << std::left << std::setw(5) << pair.first  
                   << " | " << std::left << std::setw(8) << pair.second
-                  << " | $" << std::right << std::setw(7) << std::fixed << std::setprecision(2) << value / 100.0 << "\n";
+                  << " |$" << std::right << std::setw(7) << std::fixed << std::setprecision(2) << value / 100.0 << "\n";
     }
     std::cout << "--------------------------\n"
               << std::setw(19) << "$" << std::right << std::setw(7) << std::fixed << std::setprecision(2) << totalValueCents / 100.0 << "\n";

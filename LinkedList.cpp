@@ -23,46 +23,55 @@ void LinkedList::loadFromFile(const std::string& filename) {
     }
 
     std::string line;
-    Node* last = nullptr;
     lastId = 0;  // Make sure to reset lastId when loading new file
 
     while (getline(file, line)) {
         std::stringstream ss(line);
         std::string id, name, description, priceStr;
-        getline(ss, id, '|');
-        getline(ss, name, '|');
-        getline(ss, description, '|');
-        getline(ss, priceStr);
+        if (getline(ss, id, '|') && getline(ss, name, '|') && getline(ss, description, '|') && getline(ss, priceStr)) {
+            double price = 0.0;
+            try {
+                size_t dotPos = priceStr.find('.');
+                if (dotPos == std::string::npos) {
+                    throw std::invalid_argument("Invalid price format");
+                }
+                price = std::stod(priceStr);
+            } catch (const std::exception& e) {
+                std::cerr << "Error: Invalid food data - " << e.what() << std::endl;
+                continue;  // Skip this item and continue with the next if price conversion fails
+            }
 
-        double price = 0.0;
-        try {
-            price = std::stod(priceStr);
-        } catch (const std::invalid_argument& e) {
-            continue;  // Skip this item and continue with the next if price conversion fails
-        }
+            Price foodPrice;
+            foodPrice.dollars = static_cast<unsigned>(price);
+            foodPrice.cents = static_cast<unsigned>((price - foodPrice.dollars) * 100 + 0.5);
 
-        Price foodPrice;
-        foodPrice.dollars = static_cast<unsigned>(price);
-        foodPrice.cents = static_cast<unsigned>((price - foodPrice.dollars) * 100 + 0.5);
+            FoodItem* item = new FoodItem(id, name, description, foodPrice, DEFAULT_FOOD_STOCK_LEVEL);
+            Node* newNode = new Node();
+            newNode->data = item;
+            newNode->next = nullptr;
 
-        FoodItem* item = new FoodItem(id, name, description, foodPrice, DEFAULT_FOOD_STOCK_LEVEL);
-        Node* newNode = new Node();
-        newNode->data = item;
-        newNode->next = nullptr;
+            // Insert node in sorted order
+            if (head == nullptr || head->data->name > item->name) {
+                newNode->next = head;
+                head = newNode;
+            } else {
+                Node* current = head;
+                while (current->next != nullptr && current->next->data->name < item->name) {
+                    current = current->next;
+                }
+                newNode->next = current->next;
+                current->next = newNode;
+            }
 
-        if (last == nullptr) {
-            head = newNode;
-            last = newNode;
+            int idNum = std::stoi(id.substr(1));
+            if (idNum > lastId) {
+                lastId = idNum;
+            }
         } else {
-            last->next = newNode;
-            last = newNode;
+            std::cerr << "Error: Invalid food file format." << std::endl;
         }
-
-        int idNum = std::stoi(id.substr(1));
-        if (idNum > lastId) {
-            lastId = idNum;
-        }
-    }    file.close();
+    }    
+    file.close();
 }
 
 void LinkedList::display() const {
