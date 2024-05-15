@@ -101,35 +101,52 @@ void LinkedList::display() const {
 void LinkedList::removeFoodItem() {
     if (head == nullptr) {
         std::cerr << "The menu is currently empty." << std::endl;
+        return;
     }
-
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::string id;
-    std::cout << "Enter the food id of the food to remove: ";
-    std::cin >> id;
-    Node* nodeToRemove = searchFoodItem(id);
-    if (nodeToRemove == nullptr) {
-       
-        return; 
+    while (true) {
+        std::cout << "Enter the food id of the food to remove: ";
+        
+        std::getline(std::cin, id); // Use getline to capture the entire line input
+
+        // Trim leading and trailing whitespaces
+        id.erase(0, id.find_first_not_of(" \t\n\r\f\v")); // Remove leading spaces (including tabs and new lines)
+        id.erase(id.find_last_not_of(" \t\n\r\f\v") + 1); // Remove trailing spaces
+
+        if (id.empty()) {
+            std::cerr << "Invalid empty input. Please enter a valid food id." << std::endl;
+            continue; // Prompt again if the input is empty
+        }
+
+        Node* nodeToRemove = searchFoodItem(id);
+        if (nodeToRemove == nullptr) {
+            std::cerr << "Food item with ID '" << id << "' not found. Please try again." << std::endl;
+            continue; // Prompt again if no valid ID is found
+        }
+
+        // Node removal logic
+        Node* current = head;
+        Node* previous = nullptr;
+        while (current != nodeToRemove) {
+            previous = current;
+            current = current->next;
+        }
+
+        if (previous == nullptr) { // The node to remove is the head
+            head = current->next;
+        } else { // The node to remove is not the head
+            previous->next = current->next;
+        }
+
+        std::cout << "Food item " << id << " – " << nodeToRemove->data->name << " - " << nodeToRemove->data->description 
+                  << " has been removed from the system." << std::endl;
+
+        delete nodeToRemove->data;
+        break; // Exit the loop once the item is removed
     }
-    Node* current = head;
-    Node* previous = nullptr;
-
-    while (current != nodeToRemove) {
-        previous = current;
-        current = current->next;
-    }
-
-    if (previous == nullptr) {
-        head = nodeToRemove->next;
-    } else {
-        previous->next = nodeToRemove->next;
-    }
-
-    std::cout << id << " – " << nodeToRemove->data->name << " - " << nodeToRemove->data->description 
-              << " has been removed from the system." << std::endl;
-
-    delete nodeToRemove->data;
 }
+
 
 void LinkedList::saveToFile(const std::string& filename) {
     std::ofstream file(filename);
@@ -152,34 +169,54 @@ void LinkedList::saveToFile(const std::string& filename) {
 }
 
 void LinkedList::addFoodItem() {
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear buffer once at the start
 
     std::string name, description, priceStr;
 
-    std::cout << "Enter the item name: ";
-    std::getline(std::cin, name);  
-    if (!std::all_of(name.begin(), name.end(), [](char c) { return std::isalpha(c) || std::isspace(c); })) {
-        std::cerr << "Invalid input: Name must contain only letters and spaces." << std::endl;
-        return;  // Return to main menu or calling function
+    while (true) {
+        std::cout << "Enter the item name: ";
+        if (!std::getline(std::cin, name) || name.empty()) {
+            std::cerr << "Invalid empty input. Please enter a valid name." << std::endl;
+            continue;
+        }
+        if (!std::all_of(name.begin(), name.end(), [](char c) { return std::isalpha(c) || std::isspace(c); })) {
+            std::cerr << "Invalid input: Name must contain only letters and spaces." << std::endl;
+            continue;
+        }
+        if (name.length() > NAMELEN) {
+            std::cerr << "Error: Name cannot exceed 40 characters." << std::endl;
+            continue;
+        }
+        break;
     }
-    if (name.length() > NAMELEN) {
-        std::cerr << "Error: Name cannot exceed 40 characters." << std::endl;
-        return;
+
+    while (true) {
+        std::cout << "Enter the item description: ";
+        if (!std::getline(std::cin, description) || description.empty()) {
+            std::cerr << "Invalid empty input. Please enter a valid description." << std::endl;
+            continue;
+        }
+        if (description.length() > DESCLEN) {
+            std::cerr << "Error: Description cannot exceed 255 characters." << std::endl;
+            continue;
+        }
+        break;
     }
-    std::cout << "Enter the item description: ";
-    std::getline(std::cin, description);  
-    if (description.length() > DESCLEN) {
-        std::cerr << "Error: Description cannot exceed 255 characters." << std::endl;
-        return;
-    }
-    std::cout << "Enter the price for this item (in dollars and cents, e.g., 8.50): ";
-    std::getline(std::cin, priceStr); 
+
     double price;  
-    try {
-        price = std::stod(priceStr);
-    } catch (const std::invalid_argument& e) {
-        std::cerr << "Invalid price entered. Please enter a valid price." << std::endl;
-        return;
+    while (true) {
+        std::cout << "Enter the price for this item (in dollars and cents, e.g., 8.50): ";
+        if (!std::getline(std::cin, priceStr) || priceStr.empty()) {
+            std::cerr << "Invalid empty input. Please enter a valid price." << std::endl;
+            continue;
+        }
+        try {
+            price = std::stod(priceStr);
+            break;  // Break out of the loop if price is successfully converted
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Invalid price entered. Please enter a valid price." << std::endl;
+            continue;
+        }
     }
 
     lastId++;  
@@ -209,6 +246,7 @@ void LinkedList::addFoodItem() {
 
     std::cout << "This item \"" << name << " – " << description << "\" has now been added to the food menu.\n";
 }
+
 
 Node* LinkedList::searchFoodItem(const std::string& id) {
     Node* current = head;
