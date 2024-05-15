@@ -134,46 +134,48 @@ int VendingMachine::calculateTotalInput(Transaction* transaction) {
     return total;
 }
 
+
 void VendingMachine::calculateChange(Transaction* transaction, int change) {
-    // Prepare a sorted list of denominations from largest to smallest
+    VendingMachine::updateCoinInventory(); // Ensure the latest inventory is loaded
     std::vector<std::pair<int, Denomination>> sortedDenoms;
     for (const auto& pair : denominationValue) {
         sortedDenoms.push_back({pair.second, pair.first});
     }
-    // Sorting in descending order for optimal change calculation
-    std::sort(sortedDenoms.begin(), sortedDenoms.end(), std::greater<>());
+    std::sort(sortedDenoms.begin(), sortedDenoms.end(), [](const std::pair<int, Denomination>& a, const std::pair<int, Denomination>& b) {
+        return a.first > b.first; // Descending order
+    });
 
-    // This vector will store each denomination used for change
     std::vector<Coin> changeCoins;
 
-    // Calculate change using the largest denominations first
+    // First, simulate giving change to check if it's possible
     for (const auto& denom : sortedDenoms) {
-        while (change >= denom.first) {
-            changeCoins.push_back(Coin(denom.second, 1)); // Add a coin of this denomination
+        while (change >= denom.first && coinInventory[denom.second] > 0) {
+            changeCoins.push_back(Coin(denom.second, 1));
             change -= denom.first;
+            coinInventory[denom.second]--;
         }
     }
 
-    // Append the calculated coins to the transaction's changeGiven
-    for (const auto& coin : changeCoins) {
-        transaction->changeGiven.push_back(coin);
+    if (change > 0) { // Restore coin inventory if change cannot be made
+        for (const auto& coin : changeCoins) {
+            coinInventory[coin.denom]++;
+        }
+        std::cout << "Unable to give the correct change due to insufficient coin inventory.\n";
+        std::cout << "Transaction cancelled. Please collect any coins entered.\n";
+        transaction->monetaryInputs.clear(); // Clear any recorded inputs
+        return;
     }
 
-    // Display the change in ascending order based on denomination value
-    std::sort(changeCoins.begin(), changeCoins.end(), [](const Coin& a, const Coin& b) {
-        return a.denom < b.denom;  // Sort by denomination enum values
-    });
+    // If change is possible, officially record the change given
+    transaction->changeGiven.insert(transaction->changeGiven.end(), changeCoins.begin(), changeCoins.end());
 
     std::cout << "Your change is: ";
     for (const Coin& coin : changeCoins) {
         int denomValue = denominationValue[coin.denom];
-        if (denomValue >= 100) {  // Output in dollars if denomination is 100 cents or more
-            std::cout << "$" << denomValue / 100 << " ";
-        } else {  // Output in cents otherwise
-            std::cout << denomValue << "c ";
-        }
+        std::cout << (denomValue >= 100 ? "$" : "") << (denomValue >= 100 ? denomValue / 100 : denomValue) << (denomValue < 100 ? "c " : " ");
     }
     std::cout << std::endl;
+    VendingMachine::updateCoinInventory();
 }
 
 
