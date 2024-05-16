@@ -1,0 +1,151 @@
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): Enter the ID of the food you wish to purchase (press Enter on a new line to cancel): You have selected "Baklava - Rich middle eastern cake of thin layers of flaky pastry filled with nuts and honey". This will cost you $8.50
+Please hand over the money - type in the value of each note/coin in cents.
+Your total needs to be at least $8.5
+Please insert money (in cents): You still need to give us $6.5
+Total inserted: $2
+Please insert money (in cents): Total inserted: $12
+Unable to give the correct change due to insufficient coin inventory.
+Transaction cancelled. Please collect any coins entered.
+Transaction complete. Thank you for your purchase!
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): 
+Balance Summary
+---------------
+Denom | Quantity | Value
+--------------------------
+5     | 10       |$   0.50
+10    | 1        |$   0.10
+20    | 0        |$   0.00
+50    | 0        |$   0.00
+100   | 0        |$   0.00
+200   | 1        |$   2.00
+500   | 19       |$  95.00
+1000  | 1        |$  10.00
+2000  | 0        |$   0.00
+5000  | 23       |$1150.00
+--------------------------
+                  $1257.60
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): Enter the ID of the food you wish to purchase (press Enter on a new line to cancel): You have selected "Fondue - European dish of assorted melted cheeses. Served with bread for dipping". This will cost you $31.50
+Please hand over the money - type in the value of each note/coin in cents.
+Your total needs to be at least $31.50
+Please insert money (in cents): You still need to give us $29.50
+Total inserted: $2.00
+Please insert money (in cents): Transaction cancelled. Returning to main menu.
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): 
+Balance Summary
+---------------
+Denom | Quantity | Value
+--------------------------
+5     | 10       |$   0.50
+10    | 1        |$   0.10
+20    | 0        |$   0.00
+50    | 0        |$   0.00
+100   | 0        |$   0.00
+200   | 1        |$   2.00
+500   | 19       |$  95.00
+1000  | 1        |$  10.00
+2000  | 0        |$   0.00
+5000  | 23       |$1150.00
+--------------------------
+                  $1257.60
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): Enter the ID of the food you wish to purchase (press Enter on a new line to cancel): You have selected "Jambalaya - Creole rish dish containing prawns, chicken, sausage and vegetables". This will cost you $23.00
+Please hand over the money - type in the value of each note/coin in cents.
+Your total needs to be at least $23.00
+Please insert money (in cents): You still need to give us $18.00
+Total inserted: $5.00
+Please insert money (in cents): You still need to give us $8.00
+Total inserted: $15.00
+Please insert money (in cents): You still need to give us $7.50
+Total inserted: $15.50
+Please insert money (in cents): You still need to give us $7.40
+Total inserted: $15.60
+Please insert money (in cents): Total inserted: $35.60
+Your change is: $10 $2 50c 10c 
+Transaction complete. Thank you for your purchase!
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): 
+Balance Summary
+---------------
+Denom | Quantity | Value
+--------------------------
+5     | 10       |$   0.50
+10    | 1        |$   0.10
+20    | 0        |$   0.00
+50    | 0        |$   0.00
+100   | 0        |$   0.00
+200   | 0        |$   0.00
+500   | 20       |$ 100.00
+1000  | 1        |$  10.00
+2000  | 1        |$  20.00
+5000  | 23       |$1150.00
+--------------------------
+                  $1280.60
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): 

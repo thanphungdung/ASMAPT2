@@ -1,0 +1,28 @@
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): Enter the ID of the food you wish to purchase (press Enter on a new line to cancel): You have selected "Haggis - Scottish delicacy made from tripe and oats and served with whiskey sauce". This will cost you $18.70
+Please hand over the money - type in the value of each note/coin in cents.
+Your total needs to be at least $18.7
+Please insert money (in cents): Total inserted: $20
+Unable to give the correct change due to insufficient coin inventory.
+Transaction cancelled. Please collect any coins entered.
+Transaction complete. Thank you for your purchase!
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): 

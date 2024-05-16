@@ -23,9 +23,12 @@ void LinkedList::loadFromFile(const std::string& filename) {
     }
 
     std::string line;
+    bool fileIsEmpty = true;  // Flag to check if file is empty
     lastId = 0;  // Make sure to reset lastId when loading new file
 
     while (getline(file, line)) {
+        fileIsEmpty = false;
+
         std::stringstream ss(line);
         std::string id, name, description, priceStr;
         if (getline(ss, id, '|') && getline(ss, name, '|') && getline(ss, description, '|') && getline(ss, priceStr)) {
@@ -89,6 +92,11 @@ void LinkedList::loadFromFile(const std::string& filename) {
             throw std::runtime_error("Error: Invalid food file format.");
         }
     }    
+
+    if (fileIsEmpty) {
+        throw std::runtime_error("Error: The file is empty.");
+    }
+
     file.close();
 }
 

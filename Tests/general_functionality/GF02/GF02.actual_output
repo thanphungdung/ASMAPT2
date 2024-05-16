@@ -1,0 +1,128 @@
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): 
+Food Menu
+--------
+ID   |Name                                            |Length
+-----------------------------------------------------------------
+F0001|Baklava                                         |$ 8.50
+F0005|Bibimbab                                        |$15.80
+F0006|Fondue                                          |$31.50
+F0002|Gnocchi                                         |$12.50
+F0003|Haggis                                          |$18.70
+F0004|Jambalaya                                       |$23.00
+F0007|Kelewele                                        |$11.50
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): Enter the item name: Enter the item description: Enter the price for this item (in dollars and cents, e.g., 8.50): This item "Pizza – A tasty Italian dish." has now been added to the food menu.
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): Enter the food id of the food to remove: Food item F0005 – Bibimbab - Spicy Korean rice dish with vegetables, bean paste and beef has been removed from the system.
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): 
+Food Menu
+--------
+ID   |Name                                            |Length
+-----------------------------------------------------------------
+F0001|Baklava                                         |$ 8.50
+F0006|Fondue                                          |$31.50
+F0002|Gnocchi                                         |$12.50
+F0003|Haggis                                          |$18.70
+F0004|Jambalaya                                       |$23.00
+F0007|Kelewele                                        |$11.50
+F0008|Pizza                                           |$12.00
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): Enter the ID of the food you wish to purchase (press Enter on a new line to cancel): You have selected "Pizza - A tasty Italian dish.". This will cost you $12.00
+Please hand over the money - type in the value of each note/coin in cents.
+Your total needs to be at least $12
+Please insert money (in cents): You still need to give us $10
+Total inserted: $2
+Please insert money (in cents): You still need to give us $9
+Total inserted: $3
+Please insert money (in cents): You still need to give us $8.5
+Total inserted: $3.5
+Please insert money (in cents): You still need to give us $8
+Total inserted: $4
+Please insert money (in cents): Total inserted: $14
+Your change is: $2 
+Transaction complete. Thank you for your purchase!
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): 
+Balance Summary
+---------------
+Denom | Quantity | Value
+--------------------------
+5     | 10       |$   0.50
+10    | 1        |$   0.10
+20    | 0        |$   0.00
+50    | 2        |$   1.00
+100   | 1        |$   1.00
+200   | 0        |$   0.00
+500   | 20       |$ 100.00
+1000  | 2        |$  20.00
+2000  | 1        |$  20.00
+5000  | 23       |$1150.00
+--------------------------
+                  $1292.60
+
+Main Menu:
+1. Display Meal Options
+2. Purchase Meal
+3. Save and Exit
+Administrator-Only Menu:
+4. Add Food
+5. Remove Food
+6. Display Balance
+7. Abort Program
+Select your option (1-7): 
