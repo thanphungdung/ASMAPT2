@@ -29,6 +29,25 @@ void LinkedList::loadFromFile(const std::string& filename) {
         std::stringstream ss(line);
         std::string id, name, description, priceStr;
         if (getline(ss, id, '|') && getline(ss, name, '|') && getline(ss, description, '|') && getline(ss, priceStr)) {
+            // Validate ID
+            if (id.length() != IDLEN || id[0] != 'F' || !std::all_of(id.begin() + 1, id.end(), ::isdigit)) {
+                throw std::runtime_error("Error: Invalid ID format - " + id);
+            }
+
+            // Validate name
+            if (!std::all_of(name.begin(), name.end(), [](char c) { return std::isalpha(c) || std::isspace(c); })) {
+                throw std::runtime_error("Error: Invalid name format - " + name);
+            }
+            if (name.length() > NAMELEN) {
+                throw std::runtime_error("Error: Name exceeds maximum length - " + name);
+            }
+
+            // Validate description
+            if (description.length() > DESCLEN) {
+                throw std::runtime_error("Error: Description exceeds maximum length - " + description);
+            }
+
+            // Validate and parse price
             double price = 0.0;
             try {
                 size_t dotPos = priceStr.find('.');
@@ -37,8 +56,7 @@ void LinkedList::loadFromFile(const std::string& filename) {
                 }
                 price = std::stod(priceStr);
             } catch (const std::exception& e) {
-                std::cerr << "Error: Invalid food data - " << e.what() << std::endl;
-                continue;  // Skip this item and continue with the next if price conversion fails
+                throw std::runtime_error("Error: Invalid food data - " + std::string(e.what()));
             }
 
             Price foodPrice;
@@ -68,7 +86,7 @@ void LinkedList::loadFromFile(const std::string& filename) {
                 lastId = idNum;
             }
         } else {
-            std::cerr << "Error: Invalid food file format." << std::endl;
+            throw std::runtime_error("Error: Invalid food file format.");
         }
     }    
     file.close();
