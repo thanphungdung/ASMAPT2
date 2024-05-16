@@ -34,6 +34,18 @@ Please test the program based on the following flow:
 - GF01: Navigate through all menu options then abort program.
 - GF02: Navigate through all menu options then save and exit.
 
+Ensuring the foods.dat and coins.dat must be as following to match the expected output:
+
+foods.dat:
+F0001|Baklava|Rich middle eastern cake of thin layers of flaky pastry filled with nuts and honey|8.50
+F0005|Bibimbab|Spicy Korean rice dish with vegetables, bean paste and beef|15.80
+F0006|Fondue|European dish of assorted melted cheeses. Served with bread for dipping|31.50
+F0002|Gnocchi|Italian pasta dish made from potato and served with a rich cheese sauce|12.50
+F0003|Haggis|Scottish delicacy made from tripe and oats and served with whiskey sauce|18.70
+F0004|Jambalaya|Creole rish dish containing prawns, chicken, sausage and vegetables|23.00
+F0007|Kelewele|From Ghana, fried plantains seasoned with spices|11.50
+
+coins.dat:
 5,10
 10,1
 20,0
@@ -44,11 +56,3 @@ Please test the program based on the following flow:
 1000,0
 2000,0
 5000,23
-
-F0001|Baklava|Rich middle eastern cake of thin layers of flaky pastry filled with nuts and honey|8.50
-F0005|Bibimbab|Spicy Korean rice dish with vegetables, bean paste and beef|15.80
-F0006|Fondue|European dish of assorted melted cheeses. Served with bread for dipping|31.50
-F0002|Gnocchi|Italian pasta dish made from potato and served with a rich cheese sauce|12.50
-F0003|Haggis|Scottish delicacy made from tripe and oats and served with whiskey sauce|18.70
-F0004|Jambalaya|Creole rish dish containing prawns, chicken, sausage and vegetables|23.00
-F0007|Kelewele|From Ghana, fried plantains seasoned with spices|11.50
