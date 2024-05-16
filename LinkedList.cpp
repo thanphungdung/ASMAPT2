@@ -223,19 +223,24 @@ void LinkedList::addFoodItem() {
 
     double price;  
     while (true) {
-        std::cout << "Enter the price for this item (in dollars and cents, e.g., 8.50): ";
-        if (!std::getline(std::cin, priceStr) || priceStr.empty()) {
-            std::cerr << "Invalid empty input. Please enter a valid price." << std::endl;
-            continue;
+            std::cout << "Enter the price for this item (in dollars and cents, e.g., 8.50): ";
+            if (!std::getline(std::cin, priceStr) || priceStr.empty()) {
+                std::cerr << "Invalid empty input. Please enter a valid price." << std::endl;
+                continue;
+            }
+            try {
+                price = std::stod(priceStr);
+                int cents = static_cast<int>(std::round(price * 100));
+                if (cents % 5 != 0) {
+                    std::cerr << "Price must be a multiple of 0.05." << std::endl;
+                    continue;
+                }
+                break;
+            } catch (const std::invalid_argument& e) {
+                std::cerr << "Invalid price entered. Please enter a valid price." << std::endl;
+                continue;
+            }
         }
-        try {
-            price = std::stod(priceStr);
-            break;  // Break out of the loop if price is successfully converted
-        } catch (const std::invalid_argument& e) {
-            std::cerr << "Invalid price entered. Please enter a valid price." << std::endl;
-            continue;
-        }
-    }
 
     lastId++;  
     std::stringstream ss;
