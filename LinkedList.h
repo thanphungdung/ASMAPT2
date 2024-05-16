@@ -15,7 +15,7 @@ public:
     void removeFoodItem();
     void saveToFile(const std::string& filename);
     void addFoodItem();
-    void selectFoodToPurchase(const std::string& id);
+    void selectFoodToPurchase( std::string& id);
     void abortProgram();
 
     // more functions to be added perhaps...

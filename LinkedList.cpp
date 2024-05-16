@@ -260,22 +260,32 @@ Node* LinkedList::searchFoodItem(const std::string& id) {
     return nullptr;
 }
 
-void LinkedList::selectFoodToPurchase(const std::string& id) {
-    Node* selectedFood = searchFoodItem(id);
-    if (selectedFood == nullptr) {
-       
-        return; 
+void LinkedList::selectFoodToPurchase(std::string& id) {
+    Node* selectedFood = nullptr;
+    
+    while (true) {
+        selectedFood = searchFoodItem(id);  // Search for the food item using the provided ID
+        if (selectedFood) {
+            // If a valid food item is found, proceed with displaying the information
+            std::cout << "You have selected \"" << selectedFood->data->name << " - " << selectedFood->data->description << "\". This will cost you $"
+                      << selectedFood->data->price.dollars << "." << std::setw(2) << std::setfill('0') << selectedFood->data->price.cents << std::setfill(' ') << std::endl;
+            break;  // Exit the loop after successful handling
+        } else {
+            // If not found, inform the user and continue to prompt for new ID
+            std::cerr << "Invalid food ID. Please try again." << std::endl;
+        }
+
+        std::cout << "Enter the ID of the food you wish to purchase (or type 'exit' to return): ";
+        std::getline(std::cin, id);  // Read new input from the user
+        if (id == "exit") {
+            return;  // Allow user to exit the purchase process
+        }
     }
-    std::cout << "You have selected \"" << selectedFood->data->name << " - " << selectedFood->data->description << "\". This will cost you $"
-              << selectedFood->data->price.dollars << "." << std::setw(2) << std::setfill('0') << selectedFood->data->price.cents << std::setfill(' ') << std::endl;
     
     float price = selectedFood->data->price.dollars + selectedFood->data->price.cents / 100.0f;
-    
     std::cout << "Please hand over the money - type in the value of each note/coin in cents." << std::endl;
-
     VendingMachine::handlePurchase(price);
 }
-
 void LinkedList::abortProgram() {
     std::cout << "Program is being aborted. All unsaved changes will be lost.\n";
     this->~LinkedList();
