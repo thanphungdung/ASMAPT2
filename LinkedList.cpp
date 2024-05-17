@@ -230,6 +230,10 @@ void LinkedList::addFoodItem() {
             }
             try {
                 price = std::stod(priceStr);
+                if (price < 0) {
+                    std::cerr << "Invalid minus number. Price must be non-negative." << std::endl;
+                    continue;
+        }
                 int cents = static_cast<int>(std::round(price * 100));
                 if (cents % 5 != 0) {
                     std::cerr << "Price must be a multiple of 0.05." << std::endl;
