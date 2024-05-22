@@ -5,6 +5,8 @@
 #include "LinkedList.h"
 #include "Coin.h"
 
+
+
 // Function to display the main menu
 void displayMainMenu() {
   std::cout << "\nMain Menu:\n";
@@ -43,12 +45,15 @@ int getMenuChoice() {
 int main(int argc, char **argv) {
   if (argc != 3) {
     std::cerr << "Usage: " << argv[0] << " <foodsfile> <coinsfile>" << std::endl;
+  
     exit(EXIT_FAILURE);
   }
 
   LinkedList menu;
   try {
     menu.loadFromFile(argv[1]);
+    VendingMachine::setFilename(argv[2]);  // Set the filename in VendingMachine
+
   } catch (const std::exception& e) {
     std::cerr << e.what() << std::endl;
     exit(EXIT_FAILURE);
@@ -84,10 +89,11 @@ int main(int argc, char **argv) {
             }
         }
     } else if (choice == 3) {
-      menu.saveToFile("foods.dat");
+      menu.saveToFile(argv[1]);
       VendingMachine vm;
       vm.updateCoinInventory();  
-      vm.saveInventoryToFile();
+      vm.saveInventoryToFile(argv[2]);
+      
 
       return EXIT_SUCCESS;
     } else if (choice == 4) {

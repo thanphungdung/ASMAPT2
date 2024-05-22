@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <limits>
 #include "LinkedList.h"
+#include <math.h>
 
 LinkedList::~LinkedList() {
     Node* current = head;

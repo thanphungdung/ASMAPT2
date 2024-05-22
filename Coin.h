@@ -6,7 +6,9 @@
 #include <map>
 #include <algorithm>
 
-// Enumeration for coin denominations
+
+
+
 enum Denomination {
     FIVE_CENTS = 5, 
     TEN_CENTS = 10, 
@@ -41,6 +43,7 @@ class VendingMachine {
 public:
     static std::map<Denomination, int> denominationValue;
     static std::map<Denomination, int> coinInventory; // Maps denomination value to quantity
+    static std::string filename;  //  store filename
 
     static Transaction* head;
     // static void displayBalance();
@@ -51,10 +54,11 @@ public:
     static int calculateTotalInput(Transaction* transaction);
     static void calculateChange(Transaction* transaction, int change);
     static void clearTransactions();
-    static void updateCoinInventory(); // Save the current inventory to a file
+    static void updateCoinInventory(); 
+    static void setFilename(const std::string& fn) { filename = fn; }  // Setter for filename
+
     static void displayBalance();
-    static void saveInventoryToFile();
-    // static void updateInventory(); // Update inventory based on transactions
+    static void saveInventoryToFile(const std::string& filename);
 
 };
 
