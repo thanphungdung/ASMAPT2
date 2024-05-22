@@ -130,47 +130,58 @@ void LinkedList::removeFoodItem() {
         std::cerr << "The menu is currently empty." << std::endl;
         return;
     }
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Clear the input buffer to handle previous left overs.
     std::string id;
+
     while (true) {
         std::cout << "Enter the food id of the food to remove: ";
-        
-        std::getline(std::cin, id); // Use getline to capture the entire line input
+        if (!std::getline(std::cin, id)) {
+            if (std::cin.eof()) {
+                std::cerr << "EOF detected while reading the food ID. Exiting remove item mode.\n";
+                return;  // Exit the function if EOF is detected.
+            }
+            std::cerr << "Invalid empty input. Please enter a valid food id." << std::endl;
+            std::cin.clear();  // Clear the error state of the cin object.
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Ignore the rest of the current line.
+            continue;
+        }
 
-        // Trim leading and trailing whitespaces
-        id.erase(0, id.find_first_not_of(" \t\n\r\f\v")); // Remove leading spaces (including tabs and new lines)
-        id.erase(id.find_last_not_of(" \t\n\r\f\v") + 1); // Remove trailing spaces
+        // Trim leading and trailing whitespace from the input.
+        id.erase(0, id.find_first_not_of(" \t\n\r\f\v"));  // Remove leading whitespace.
+        id.erase(id.find_last_not_of(" \t\n\r\f\v") + 1);  // Remove trailing whitespace.
 
         if (id.empty()) {
             std::cerr << "Invalid empty input. Please enter a valid food id." << std::endl;
-            continue; // Prompt again if the input is empty
+            continue;  // Prompt again if the input is empty.
         }
 
         Node* nodeToRemove = searchFoodItem(id);
         if (nodeToRemove == nullptr) {
             std::cerr << "Food item with ID '" << id << "' not found. Please try again." << std::endl;
-            continue; // Prompt again if no valid ID is found
+            continue;  // Prompt again if no valid ID is found.
         }
 
-        // Node removal logic
-        Node* current = head;
-        Node* previous = nullptr;
-        while (current != nodeToRemove) {
-            previous = current;
-            current = current->next;
-        }
-
-        if (previous == nullptr) { // The node to remove is the head
-            head = current->next;
-        } else { // The node to remove is not the head
-            previous->next = current->next;
+        // Node removal logic.
+        if (nodeToRemove == head) {
+            head = nodeToRemove->next;  // The node to remove is the head.
+        } else {
+            Node* current = head;
+            Node* previous = nullptr;
+            while (current != nodeToRemove) {
+                previous = current;
+                current = current->next;
+            }
+            if (previous != nullptr) {
+                previous->next = current->next;  // The node to remove is not the head.
+            }
         }
 
         std::cout << "Food item " << id << " – " << nodeToRemove->data->name << " - " << nodeToRemove->data->description 
                   << " has been removed from the system." << std::endl;
 
-        delete nodeToRemove->data;
-        break; // Exit the loop once the item is removed
+        delete nodeToRemove->data;  // Free the memory for the food item.
+        delete nodeToRemove;  // Free the memory for the node.
+        break;  // Exit the loop once the item is removed.
     }
 }
 
@@ -203,9 +214,14 @@ void LinkedList::addFoodItem() {
     while (true) {
         std::cout << "Enter the item name: ";
         if (!std::getline(std::cin, name) || name.empty()) {
+            if (std::cin.eof()) {
+                std::cerr << "EOF detected while reading the name. Exiting add item mode.\n";
+                return; // Exit the function if EOF is detected
+            }
             std::cerr << "Invalid empty input. Please enter a valid name." << std::endl;
             continue;
         }
+
         if (!std::all_of(name.begin(), name.end(), [](char c) { return std::isalpha(c) || std::isspace(c); })) {
             std::cerr << "Invalid input: Name must contain only letters and spaces." << std::endl;
             continue;
@@ -312,12 +328,16 @@ void LinkedList::selectFoodToPurchase(std::string& id) {
         }
 
         std::cout << "Enter the ID of the food you wish to purchase (or type 'exit' to return): ";
-        std::getline(std::cin, id);  // Read new input from the user
-        if (id == "exit") {
-            return;  // Allow user to exit the purchase process
+        if (!std::getline(std::cin, id) || id == "exit") {
+            if (std::cin.eof()) {
+                std::cout << "EOF detected. Exiting purchase mode.\n";
+                std::cin.clear(); // Clear the EOF state to continue using cin
+                return;  // Exit the purchase process
+            }
+            return;  // Allow user to exit the purchase process normally
         }
     }
-    
+
     float price = selectedFood->data->price.dollars + selectedFood->data->price.cents / 100.0f;
     std::cout << "Please hand over the money - type in the value of each note/coin in cents." << std::endl;
     VendingMachine::handlePurchase(price);

@@ -32,10 +32,18 @@ int getMenuChoice() {
                 std::cout << "Invalid menu choice. Please select a number between 1 and 7: ";
             }
         } else {
-            // Handle non-numeric input
-            std::cin.clear(); // Clear error flag
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore wrong input
-            std::cout << "Invalid menu choice. Please select a number between 1 and 7: ";
+            if (std::cin.eof()) {
+                // Handle EOF
+                std::cout << "EOF detected. Exiting the menu.\n";
+                std::cin.clear(); // Clear error flag
+                return -1; // Return an invalid choice or handle as needed
+                break;
+            } else {
+                // Handle non-numeric input
+                std::cin.clear(); // Clear error flag
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore wrong input
+                std::cout << "Invalid menu choice. Please select a number between 1 and 7: ";
+            }
         }
     }
 }
@@ -62,6 +70,11 @@ int main(int argc, char **argv) {
   while (true) {
     displayMainMenu();
     int choice = getMenuChoice();
+  
+    if (choice == -1) {
+            std::cout << "Exiting the program due to EOF or manual exit request.\n";
+            break; // Exit the loop
+        }
 
     if (choice == 1) {
       menu.display();
